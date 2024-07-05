@@ -49,7 +49,7 @@ publishing {
                 name = PUBLISH_ARTIFACT_ID
                 description = 'A video player for Android.'
                 // If your project has a dedicated site, use its URL here
-                url = 'https://github.com/Doikki/DKVideoPlayer'
+                url = 'https://github.com/huijiazhou/DKVideoPlayer'
                 licenses {
                     license {
                         //协议类型，一般默认Apache License2.0的话不用改：
