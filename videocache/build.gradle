@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 }
 ext {
-    PUBLISH_ARTIFACT_ID = 'videocache'
+    PUBLISH_ARTIFACT_ID = 'localvideocache'
 }
 
 apply from: '../publish.gradle'
