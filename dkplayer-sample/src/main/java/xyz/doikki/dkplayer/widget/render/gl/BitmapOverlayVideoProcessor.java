@@ -15,7 +15,8 @@
  */
 package xyz.doikki.dkplayer.widget.render.gl;
 
-import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
+
+import static com.danikula.videocache.Preconditions.checkNotNull;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -26,20 +27,23 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import androidx.media3.common.util.GlProgram;
+import androidx.media3.common.util.GlUtil;
+import androidx.media3.common.util.Log;
+import androidx.media3.common.util.UnstableApi;
 
-import com.google.android.exoplayer2.util.GlProgram;
-import com.google.android.exoplayer2.util.GlUtil;
+import javax.microedition.khronos.opengles.GL10;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 import java.io.IOException;
 
-import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Video processor that demonstrates how to overlay a bitmap on video output using a GL shader. The
  * bitmap is drawn using an Android {@link Canvas}.
  */
-/* package */ final class BitmapOverlayVideoProcessor implements GLSurfaceRenderView.VideoProcessor {
-
+/* package */ @UnstableApi final class BitmapOverlayVideoProcessor implements GLSurfaceRenderView.VideoProcessor {
+    private static final String TAG = "BitmapOverlayVP";
     private static final int OVERLAY_WIDTH = 512;
     private static final int OVERLAY_HEIGHT = 256;
 
@@ -50,7 +54,7 @@ import javax.microedition.khronos.opengles.GL10;
     private final Bitmap logoBitmap;
     private final Canvas overlayCanvas;
 
-    private GlProgram program;
+    private  @MonotonicNonNull GlProgram program;
 
     private float bitmapScaleX;
     private float bitmapScaleY;
@@ -74,16 +78,20 @@ import javax.microedition.khronos.opengles.GL10;
         }
     }
 
+
     @Override
-    public void initialize() {
+     public void initialize() {
         try {
             program =
                     new GlProgram(
                             context,
                             /* vertexShaderFilePath= */ "bitmap_overlay_video_processor_vertex.glsl",
                             /* fragmentShaderFilePath= */ "bitmap_overlay_video_processor_fragment.glsl");
-        } catch (IOException e) {
+         } catch (IOException e) {
             throw new IllegalStateException(e);
+        } catch (GlUtil.GlException e) {
+            Log.e(TAG, "Failed to initialize the shader program", e);
+            return;
         }
         program.setBufferAttribute(
                 "aFramePosition",
@@ -118,7 +126,11 @@ import javax.microedition.khronos.opengles.GL10;
         GLES20.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
         GLUtils.texSubImage2D(
                 GL10.GL_TEXTURE_2D, /* level= */ 0, /* xoffset= */ 0, /* yoffset= */ 0, overlayBitmap);
-        GlUtil.checkGlError();
+        try {
+            GlUtil.checkGlError();
+        } catch (GlUtil.GlException e) {
+            Log.e(TAG, "Failed to populate the texture", e);
+        }
 
         // Run the shader program.
         GlProgram program = checkNotNull(this.program);
@@ -127,16 +139,28 @@ import javax.microedition.khronos.opengles.GL10;
         program.setFloatUniform("uScaleX", bitmapScaleX);
         program.setFloatUniform("uScaleY", bitmapScaleY);
         program.setFloatsUniform("uTexTransform", transformMatrix);
-        program.bindAttributesAndUniforms();
+        try {
+            program.bindAttributesAndUniforms();
+        } catch (GlUtil.GlException e) {
+            Log.e(TAG, "Failed to update the shader program", e);
+        }
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, /* first= */ 0, /* count= */ 4);
-        GlUtil.checkGlError();
+        try {
+            GlUtil.checkGlError();
+        } catch (GlUtil.GlException e) {
+            Log.e(TAG, "Failed to draw a frame", e);
+        }
     }
 
     @Override
     public void release() {
         if (program != null) {
-            program.delete();
+            try {
+                program.delete();
+            } catch (GlUtil.GlException e) {
+                Log.e(TAG, "Failed to delete the shader program", e);
+            }
         }
     }
 }

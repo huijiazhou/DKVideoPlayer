@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import xyz.doikki.videoplayer.controller.LocalProxyVideoControl;
 import xyz.doikki.videoplayer.util.L;
 
 /**
@@ -42,8 +43,12 @@ public class PreloadManager {
      */
     public static final int PRELOAD_LENGTH = 1024 * 1024;
 
+    private LocalProxyVideoControl mLocalProxyVideoControl;
+
     private PreloadManager(Context context) {
         mHttpProxyCacheServer = ProxyVideoCacheManager.getProxy(context);
+        mLocalProxyVideoControl = new LocalProxyVideoControl();
+        mLocalProxyVideoControl.pauseLocalProxyTask("");
     }
 
     public static PreloadManager getInstance(Context context) {

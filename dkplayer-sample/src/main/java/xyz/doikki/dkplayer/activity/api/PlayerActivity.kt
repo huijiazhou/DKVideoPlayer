@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.jeffmony.videocache.ppvod.PpvodUtil
 import xyz.doikki.dkplayer.R
 import xyz.doikki.dkplayer.activity.BaseActivity
 import xyz.doikki.dkplayer.util.IntentKeys
@@ -152,7 +153,10 @@ class PlayerActivity : BaseActivity<VideoView>() {
         val etOtherVideo = findViewById<EditText>(R.id.et_other_video)
         findViewById<View>(R.id.btn_start_play).setOnClickListener {
             mVideoView.release()
-            mVideoView.setUrl(etOtherVideo.text.toString())
+            var url =
+                "http://192.168.24.210:20158/play/20240527/uYET7SBm/index.m3u8?start=10&end=40&sign=89409cec8b14439b241db86c435e98529530d0e276b1df5731199d7794dfc126b7af09146fb2c79feb2c10c3ebcac8d2&rSign=bbd3dd98438e775648566e2fb43a9dc6dd8b113944a21004d2717226a673bc5f"
+
+            mVideoView.setUrl(PpvodUtil.getNewUrl(url))
             mVideoView.start()
         }
     }

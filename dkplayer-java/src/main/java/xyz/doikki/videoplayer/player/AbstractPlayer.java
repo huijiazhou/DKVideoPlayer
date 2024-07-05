@@ -4,7 +4,15 @@ import android.content.res.AssetFileDescriptor;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import com.jeffmony.videocache.common.ProxyMessage;
+import com.jeffmony.videocache.common.VideoParams;
+import com.jeffmony.videocache.utils.VideoParamsUtils;
+import com.jeffmony.videocache.utils.VideoProxyThreadUtils;
+
 import java.util.Map;
+
+import xyz.doikki.videoplayer.controller.LocalProxyVideoControl;
+import xyz.doikki.videoplayer.util.PlayerSettings;
 
 /**
  * 抽象的播放器，继承此接口扩展自己的播放器
@@ -31,6 +39,11 @@ public abstract class AbstractPlayer {
      * 视频旋转信息
      */
     public static final int MEDIA_INFO_VIDEO_ROTATION_CHANGED = 10001;
+
+    /**
+     * 缓冲进度
+     */
+    protected float mProxyCachePercent = 0f;
 
     /**
      * 播放器事件回调
@@ -150,6 +163,14 @@ public abstract class AbstractPlayer {
      */
     public abstract long getTcpSpeed();
 
+    public LocalProxyVideoControl mLocalProxyVideoControl;
+
+    protected PlayerSettings mPlayerSettings;
+
+    public void initPlayerSettings(PlayerSettings playerSettings){
+        this.mPlayerSettings = playerSettings;
+    }
+
     /**
      * 绑定VideoView
      */
@@ -170,5 +191,17 @@ public abstract class AbstractPlayer {
         void onVideoSizeChanged(int width, int height);
 
     }
+
+    public void notifyOnProxyCacheInfo(int msg, Map<String, Object> params) {
+        VideoProxyThreadUtils.runOnUiThread(() -> {
+
+            if (msg == ProxyMessage.MSG_VIDEO_PROXY_PROGRESS || msg == ProxyMessage.MSG_VIDEO_PROXY_COMPLETED) {
+                mProxyCachePercent = VideoParamsUtils.getFloatValue(params, VideoParams.PERCENT);
+            } else if (msg == ProxyMessage.MSG_VIDEO_PROXY_FORBIDDEN) {
+                mPlayerSettings.setLocalProxyEnable(false);
+            }
+        });
+    }
+
 
 }

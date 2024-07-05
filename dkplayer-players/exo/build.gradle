@@ -8,6 +8,7 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+        multiDexEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -16,13 +17,28 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree('libs')
     implementation project(':dkplayer-java')
-    api "com.google.android.exoplayer:exoplayer-core:$project.exoPlayerVersion"
-    api "com.google.android.exoplayer:exoplayer-dash:$project.exoPlayerVersion"
-    api "com.google.android.exoplayer:exoplayer-hls:$project.exoPlayerVersion"
-    api "com.google.android.exoplayer:exoplayer-rtsp:$project.exoPlayerVersion"
-    api "com.google.android.exoplayer:extension-rtmp:$project.exoPlayerVersion"
+    implementation project(':videocache')
+//    api "com.google.android.exoplayer:exoplayer-core:$project.exoPlayerVersion"
+//    api "com.google.android.exoplayer:exoplayer-dash:$project.exoPlayerVersion"
+//    api "com.google.android.exoplayer:exoplayer-hls:$project.exoPlayerVersion"
+//    api "com.google.android.exoplayer:exoplayer-rtsp:$project.exoPlayerVersion"
+//    api "com.google.android.exoplayer:extension-rtmp:$project.exoPlayerVersion"
+
+    implementation 'com.github.huijiazhou.media:media3-exoplayer:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-exoplayer-dash:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-exoplayer-hls:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-exoplayer-hls:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-exoplayer-rtsp:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-datasource-rtmp:v1.0.1'
+    implementation 'com.github.huijiazhou.media:media3-common:v1.0.1'
+//    implementation "androidx.media3:media3-exoplayer:$project.exoPlayerVersion"
+//    implementation "androidx.media3:media3-exoplayer-dash:$project.exoPlayerVersion"
+//    implementation "androidx.media3:media3-exoplayer-hls:$project.exoPlayerVersion"
+//    implementation "androidx.media3:media3-exoplayer-rtsp:$project.exoPlayerVersion"
+//    implementation "androidx.media3:media3-datasource-rtmp:$project.exoPlayerVersion"
+//    implementation "androidx.media3:media3-common:$project.exoPlayerVersion"
 }
 
 ext {

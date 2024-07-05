@@ -28,7 +28,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.util.GlUtil;
+import androidx.annotation.OptIn;
+import androidx.media3.common.util.GlUtil;
+import androidx.media3.common.util.UnstableApi;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -282,9 +284,13 @@ public final class GLSurfaceRenderView extends GLSurfaceView implements IRenderV
             transformMatrix = new float[16];
         }
 
-        @Override
+        @OptIn(markerClass = UnstableApi.class) @Override
         public synchronized void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            texture = GlUtil.createExternalTexture();
+            try {
+                texture = GlUtil.createExternalTexture();
+            } catch (GlUtil.GlException e) {
+                throw new RuntimeException(e);
+            }
             surfaceTexture = new SurfaceTexture(texture);
             surfaceTexture.setOnFrameAvailableListener(
                     surfaceTexture -> {

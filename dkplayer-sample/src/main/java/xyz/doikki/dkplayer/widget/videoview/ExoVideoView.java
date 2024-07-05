@@ -5,30 +5,30 @@ import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-
-import java.util.Map;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.RenderersFactory;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.trackselection.TrackSelector;
 
 import xyz.doikki.dkplayer.widget.player.CustomExoMediaPlayer;
-import xyz.doikki.videoplayer.exo.ExoMediaSourceHelper;
+import xyz.doikki.videoplayer.exo.ExoMediaPlayer;
 import xyz.doikki.videoplayer.player.BaseVideoView;
 import xyz.doikki.videoplayer.player.PlayerFactory;
+import xyz.doikki.videoplayer.util.PlayerSettings;
 
-public class ExoVideoView extends BaseVideoView<CustomExoMediaPlayer> {
+@UnstableApi
+public class ExoVideoView extends BaseVideoView<ExoMediaPlayer> {
 
     private MediaSource mMediaSource;
 
     private boolean mIsCacheEnabled;
 
-    private LoadControl mLoadControl;
+//    private LoadControl mLoadControl;
     private RenderersFactory mRenderersFactory;
     private TrackSelector mTrackSelector;
 
-    private final ExoMediaSourceHelper mHelper;
+
+    protected PlayerSettings mPlayerSettings;
 
     public ExoVideoView(Context context) {
         super(context);
@@ -50,36 +50,22 @@ public class ExoVideoView extends BaseVideoView<CustomExoMediaPlayer> {
                 return new CustomExoMediaPlayer(context);
             }
         });
-        mHelper = ExoMediaSourceHelper.getInstance(getContext());
     }
 
     @Override
     protected void setInitOptions() {
         super.setInitOptions();
-        mMediaPlayer.setLoadControl(mLoadControl);
+        mMediaPlayer.initPlayerSettings(mPlayerSettings);
         mMediaPlayer.setRenderersFactory(mRenderersFactory);
         mMediaPlayer.setTrackSelector(mTrackSelector);
     }
 
-    @Override
-    protected boolean prepareDataSource() {
-        if (mMediaSource != null) {
-            mMediaPlayer.setDataSource(mMediaSource);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * 设置ExoPlayer的MediaSource
      */
     public void setMediaSource(MediaSource mediaSource) {
         mMediaSource = mediaSource;
-    }
-
-    @Override
-    public void setUrl(String url, Map<String, String> headers) {
-        mMediaSource = mHelper.getMediaSource(url, headers, mIsCacheEnabled);
     }
 
     /**
@@ -89,8 +75,11 @@ public class ExoVideoView extends BaseVideoView<CustomExoMediaPlayer> {
         mIsCacheEnabled = isEnabled;
     }
 
-    public void setLoadControl(LoadControl loadControl) {
-        mLoadControl = loadControl;
+//    public void setLoadControl(LoadControl loadControl) {
+//        mLoadControl = loadControl;
+//    }
+    public void initPlayerSettings(PlayerSettings playerSettings){
+        this.mPlayerSettings = playerSettings;
     }
 
     public void setRenderersFactory(RenderersFactory renderersFactory) {

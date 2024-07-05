@@ -53,59 +53,73 @@ public class DataUtil {
         List<VideoBean> videoList = new ArrayList<>();
         videoList.add(new VideoBean("预告片1",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/754/v_754_npBo.m3u8?sign=a816be779a83cc203e3cb6ff68daeff44a2767fe30562ea97d2b990ef63f71eb9b7cdbe59102798cbf068c616ff0145f&rSign=98964aaf1df0837eee0befc7d84d4496"
+                ));
 
         videoList.add(new VideoBean("预告片2",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/21/mp4/190321153853126488.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/830/v_830_64xM.m3u8?sign=a816be779a83cc203e3cb6ff68daeff401171f6680730c5086d2fa01763556a4a671a9037f157f5f1b69a4e2d293e448&rSign=281bcd38e963286558d5522432946fff"
+                ));
 
         videoList.add(new VideoBean("预告片3",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/889/v_889_J2hU.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4a7c5699fd3025fc5385265c5ed5b5253aeaa79a57a12ea08cea4cfbe4a8fc73d&rSign=04a9bcf8b4573a58d56f6ede70b9e71c"
+                ));
 
         videoList.add(new VideoBean("预告片4",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319212559089721.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/763/v_763_ms5u.m3u8?sign=a816be779a83cc203e3cb6ff68daeff49ef1a6496f303024f29c058d2e0741f670bfc01a20afbf19b7eb280bb1ca5eca&rSign=68e4864b5765aca92313f1edb9b72e8a"
+        ));
 
         videoList.add(new VideoBean("预告片5",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/18/mp4/190318231014076505.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/765/v_765_Xa6F.m3u8?sign=a816be779a83cc203e3cb6ff68daeff416326e2e8dd8d7bc81d58759a847c164a94f0860b8164f9efa83a83e0defe18c&rSign=7c668b025e1964354aa1cf7537d374a0"
+                ));
 
         videoList.add(new VideoBean("预告片6",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/18/mp4/190318214226685784.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/833/v_833_a5Ah.m3u8?sign=a816be779a83cc203e3cb6ff68daeff42e8a44dcbd2c28be3ef84ed8ecf1adaf8aa34ebc02d4812fd9590022b94ec872&rSign=c9d493ca412c646f74e0de7765be7e88"
+                ));
 
         videoList.add(new VideoBean("预告片7",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319104618910544.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/854/v_854_6oaE.m3u8?sign=a816be779a83cc203e3cb6ff68daeff47ebb77a2826068edd122bba260813285a83cc31455adf2d4eb61ae19382e7b22&rSign=af53b88661db42b0f3509cea1b5f6bc4"
+                ));
 
         videoList.add(new VideoBean("预告片8",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319125415785691.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/809/v_809_QvLx.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4f293a829ae007b2ba9406569e38d7cd32dae49da549a403a519ed60bcf559d33&rSign=fccffa5c182de25221e8805873456acd"
+                ));
 
         videoList.add(new VideoBean("预告片9",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/17/mp4/190317150237409904.mp4"));
+                "http://192.168.24.210:2100/20240612/1RXJme64/index.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4f293a829ae007b2ba9406569e38d7cd32dae49da549a403a519ed60bcf559d33&rSign=26e520246dc7c95241b4e256f653f7e7d755825beedb98f919a6593f21fbad1a"
+                ));
 
         videoList.add(new VideoBean("预告片10",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/14/mp4/190314223540373995.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/813/v_813_Fhum.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4cbc75ce06160b098822e5b55762dbb51b8d66957c4a014d31cef8283541b704a&rSign=bd87736bab8b67e0cd27d980855a008b"
+                ));
 
         videoList.add(new VideoBean("预告片11",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/14/mp4/190314102306987969.mp4"));
+                "http://192.168.24.210:20158/play/m3u8/861/v_861_mbRS.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4e62d9152fe90e7c68dcd0d581658e3a55001ff092e9bc58b3df475941971edb7&rSign=ea12c036fb832c4cba96ed40434de109"
+                ));
 
         videoList.add(new VideoBean("预告片12",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/13/mp4/190313094901111138.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/787/v_787_69WC.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4070dfefdb461ee52221ad3d36b4b3472879f7cade4703463cd138a4eb38642c0&rSign=34b1a4db26a2fbb91ec612f2cbceb30c"
+                ));
 
         videoList.add(new VideoBean("预告片13",
                 "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312143927981075.mp4"));
+                "http://192.168.24.239:20158/play/m3u8/814/v_814_LmUH.m3u8?sign=a816be779a83cc203e3cb6ff68daeff479ddaa19bdad8f8b2c61fb3a5766309abaecebfc2e4483c1628b2827698538c7&rSign=0f4938e0e10187fb117a18d5745f8b02"
+                ));
 
         videoList.add(new VideoBean("预告片14",
                 "https://cms-bucket.nosdn.127.net/cb37178af1584c1588f4a01e5ecf323120180418133127.jpeg",
-                "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312083533415853.mp4"));
+                "http://192.168.24.210:20158/play/20240603/TZieeUvt/index.m3u8?sign=a816be779a83cc203e3cb6ff68daeff4798ef916cc2fe8143f7bbb6d9b850df75f41a18947187409b6ef17378d73f698&rSign=23732e4f0ac1baf4a395e07a165a76657bbc2baab0b1bb5f2b6f23b9759ebdde"
+                ));
 
         return videoList;
     }

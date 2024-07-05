@@ -5,33 +5,40 @@ import android.content.res.AssetFileDescriptor;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector;
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.util.Clock;
-import com.google.android.exoplayer2.util.EventLogger;
-import com.google.android.exoplayer2.video.VideoSize;
+
+import androidx.media3.common.PlaybackException;
+import androidx.media3.common.PlaybackParameters;
+import androidx.media3.common.Player;
+import androidx.media3.common.VideoSize;
+import androidx.media3.common.util.Clock;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.DefaultLoadControl;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.RenderersFactory;
+import androidx.media3.exoplayer.analytics.DefaultAnalyticsCollector;
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.trackselection.TrackSelector;
+import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter;
+import androidx.media3.exoplayer.util.EventLogger;
+
+import com.jeffmony.videocache.ppvod.PpvodUtil;
+import com.jeffmony.videocache.utils.LogUtils;
+import com.jeffmony.videocache.utils.ProxyCacheUtils;
 
 import java.util.Map;
 
+import xyz.doikki.videoplayer.controller.LocalProxyVideoControl;
 import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.VideoViewManager;
 
 
+@UnstableApi
 public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
-
+    private static final String TAG = "ExoMediaPlayer";
     protected Context mAppContext;
     protected ExoPlayer mInternalPlayer;
     protected MediaSource mMediaSource;
@@ -41,12 +48,16 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
 
     private boolean mIsPreparing;
 
-    private LoadControl mLoadControl;
+//    private LoadControl mLoadControl;
     private RenderersFactory mRenderersFactory;
     private TrackSelector mTrackSelector;
 
+    private boolean mIsM3U8 = false;
+
     public ExoMediaPlayer(Context context) {
         mAppContext = context.getApplicationContext();
+        mLocalProxyVideoControl = new LocalProxyVideoControl();
+        mLocalProxyVideoControl.initPlayer(this);
         mMediaSourceHelper = ExoMediaSourceHelper.getInstance(context);
     }
 
@@ -57,7 +68,7 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
                 mRenderersFactory == null ? mRenderersFactory = new DefaultRenderersFactory(mAppContext) : mRenderersFactory,
                 new DefaultMediaSourceFactory(mAppContext),
                 mTrackSelector == null ? mTrackSelector = new DefaultTrackSelector(mAppContext) : mTrackSelector,
-                mLoadControl == null ? mLoadControl = new DefaultLoadControl() : mLoadControl,
+                 new DefaultLoadControl(),
                 DefaultBandwidthMeter.getSingletonInstance(mAppContext),
                 new DefaultAnalyticsCollector(Clock.DEFAULT))
                 .build();
@@ -79,13 +90,21 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
         mRenderersFactory = renderersFactory;
     }
 
-    public void setLoadControl(LoadControl loadControl) {
-        mLoadControl = loadControl;
-    }
 
     @Override
     public void setDataSource(String path, Map<String, String> headers) {
-        mMediaSource = mMediaSourceHelper.getMediaSource(path, headers);
+        String playUrl;
+        if (mPlayerSettings!= null &&  mPlayerSettings.getLocalProxyEnable()){
+             mIsM3U8 = ProxyCacheUtils.isM3U8(PpvodUtil.getUrlWithOutSign(path), null);
+
+            playUrl = ProxyCacheUtils.getProxyUrl(PpvodUtil.getUrlWithOutSign(path), null, null);
+            //缓存
+            mLocalProxyVideoControl.startRequestVideoInfo(PpvodUtil.getUrlWithOutSign(path), null, null,path.contains(".m3u8"));
+        }else {
+            playUrl = PpvodUtil.getNewUrl(path);
+        }
+        LogUtils.i(TAG, "playUrl:"+playUrl);
+        mMediaSource = mMediaSourceHelper.getMediaSource(playUrl, headers,mIsM3U8);
     }
 
     @Override
@@ -97,6 +116,8 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
     public void start() {
         if (mInternalPlayer == null)
             return;
+        if (mPlayerSettings!= null && mPlayerSettings.getLocalProxyEnable())
+            mLocalProxyVideoControl.resumeLocalProxyTask();
         mInternalPlayer.setPlayWhenReady(true);
     }
 
@@ -104,6 +125,8 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
     public void pause() {
         if (mInternalPlayer == null)
             return;
+        if (mPlayerSettings!= null && mPlayerSettings.getLocalProxyEnable())
+            mLocalProxyVideoControl.pauseLocalProxyTask();
         mInternalPlayer.setPlayWhenReady(false);
     }
 
@@ -116,6 +139,7 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
 
     @Override
     public void prepareAsync() {
+        LogUtils.i(TAG, "prepareAsync");
         if (mInternalPlayer == null)
             return;
         if (mMediaSource == null) return;
@@ -157,6 +181,8 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
     public void seekTo(long time) {
         if (mInternalPlayer == null)
             return;
+        if (mPlayerSettings!= null && mPlayerSettings.getLocalProxyEnable())
+            mLocalProxyVideoControl.seekToCachePosition(time);
         mInternalPlayer.seekTo(time);
     }
 
@@ -167,7 +193,8 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
             mInternalPlayer.release();
             mInternalPlayer = null;
         }
-
+        if (mPlayerSettings!= null && mPlayerSettings.getLocalProxyEnable())
+            mLocalProxyVideoControl.releaseLocalProxyResources();
         mIsPreparing = false;
         mSpeedPlaybackParameters = null;
     }
@@ -188,7 +215,12 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
 
     @Override
     public int getBufferedPercentage() {
-        return mInternalPlayer == null ? 0 : mInternalPlayer.getBufferedPercentage();
+        if (mInternalPlayer == null)
+            return 0;
+        if (mPlayerSettings!= null && mPlayerSettings.getLocalProxyEnable()) {
+            return (int) mProxyCachePercent;
+        }
+        return mInternalPlayer.getBufferedPercentage();
     }
 
     @Override

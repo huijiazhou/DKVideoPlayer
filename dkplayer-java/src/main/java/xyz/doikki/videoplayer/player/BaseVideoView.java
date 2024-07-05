@@ -21,6 +21,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.jeffmony.videocache.ppvod.PpvodUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -614,6 +616,7 @@ public class BaseVideoView<P extends AbstractPlayer> extends FrameLayout
      * 设置视频地址
      */
     public void setUrl(String url) {
+        url = PpvodUtil.getUrlWithOutSign(url);
         setUrl(url, null);
     }
 
