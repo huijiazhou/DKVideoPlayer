@@ -31,3 +31,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 }
+ext {
+    PUBLISH_ARTIFACT_ID = 'videocache'
+}
+
+apply from: '../publish.gradle'

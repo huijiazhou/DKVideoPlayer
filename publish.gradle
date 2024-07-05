@@ -67,8 +67,8 @@ publishing {
                 // Version control info, if you're using GitHub, follow the format as seen here
                 scm {
                     connection = 'scm:git:github.com/Doikki/DKVideoPlayer.git'
-                    developerConnection = 'scm:git:ssh://github.com/Doikki/DKVideoPlayer.git'
-                    url = 'https://github.com/Doikki/DKVideoPlayer/tree/master'
+                    developerConnection = 'scm:git:ssh://github.com/huijiazhou/DKVideoPlayer.git'
+                    url = 'https://github.com/huijiazhou/DKVideoPlayer/tree/master'
                 }
                 // A slightly hacky fix so that your POM will include any transitive dependencies
                 // that your library builds upon
