@@ -66,7 +66,7 @@ publishing {
                 }
                 // Version control info, if you're using GitHub, follow the format as seen here
                 scm {
-                    connection = 'scm:git:github.com/Doikki/DKVideoPlayer.git'
+                    connection = 'scm:git:github.com/huijiazhou/DKVideoPlayer.git'
                     developerConnection = 'scm:git:ssh://github.com/huijiazhou/DKVideoPlayer.git'
                     url = 'https://github.com/huijiazhou/DKVideoPlayer/tree/master'
                 }
